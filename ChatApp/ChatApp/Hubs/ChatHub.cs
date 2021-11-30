@@ -23,16 +23,18 @@ namespace ChatApp
 
         public Task Send(string message)
         {
-            Users us = new Users();
-            us.ConnectionId = Context.ConnectionId;
-            us.Username = message;
+            Users us = new()
+            {
+                ConnectionId = Context.ConnectionId,
+                Username = message
+            };
             connectionList.Add(us);
             return Clients.All.SendAsync("Send", message, connectionList);
         }
 
         public Task SendToOthers(string message)
         {
-            return Clients.Others.SendAsync("SendToOthers", $"{Context.ConnectionId}: {message}");
+            return Clients.Others.SendAsync("SendToOthers", message, connectionList, Context.ConnectionId);
         }
 
         public Task SendToConnection(string connectionId, string username, string message)

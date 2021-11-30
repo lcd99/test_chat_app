@@ -143,7 +143,8 @@
     async function start() {
         try {
             await connection.start();
-            console.log("SignalR Connected.");
+            console.log("Connected: " + connection.connectionId);
+            connectionString = connection.connectionId;
         } catch (err) {
             console.log(err);
             setTimeout(start, 5000);
@@ -157,15 +158,14 @@
     // Start the connection.
     start();
 
-    const connectionString = "";
-    var listOnline = [];
 
-    connection.on('OnConnectedAsync', (message, connectionString) => {
+    var listOnline = [];
+    var connectionString = "";
+    connection.on('OnConnectedAsync', (message, connectionStringFromServer) => {
         console.log(message)
-        connectionString = connectionString;
     });
 
-    connection.on('Send', (username, lstConnection) => {
+    connection.on('Send', (message, lstConnection) => {
         appendLineListOnline(lstConnection)
     });
 
@@ -193,6 +193,7 @@
         $('.boxed-chat').show();
         $('.boxed-chat').css("display", "flex");
 
+        //await connection.invoke("SendToOthers", $('#nick').val());
         await connection.invoke("Send", $('#nick').val());
     }
 
@@ -312,8 +313,9 @@
         console.log(lstConnection);
         $("#list-online .name-user").remove();
         lstConnection.forEach(element => {
-            if (element.connectionId !== connectionString)
-                $("#list-online").append(`<li class="name-user" id="${element.connectionId}" ondblclick="onPrivateMsg('${element.connectionId}', '${element.username}')">${element.username}</li>`);
+            //console.log("connectionId: " + element.connectionId, "connectionString: " + connectionString)
+            if (element.connectionId != connectionString)
+            $("#list-online").append(`<li class="name-user" id="${element.connectionId}" onclick="onPrivateMsg('${element.connectionId}', '${element.username}')">${element.username} - ${element.connectionId}</li>`);
         });
     };
 
@@ -330,7 +332,7 @@
         let message = $('#input-private-mgs').val();
         let connectionId = $('#connectionId').text();
         let username = $('#user-name-private-msg').text();
-
+        appendLinPrivateMgs(username, message);
         $('#input-private-mgs').val('');
 
         connection.invoke('SendToConnection', connectionId, username, message);

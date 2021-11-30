@@ -37,3 +37,4 @@ D:\TEST\test_chat_app\ChatApp\ChatApp\obj\Debug\net5.0\ref\ChatApp.dll
 D:\TEST\test_chat_app\ChatApp\ChatApp\obj\Debug\net5.0\ChatApp.pdb
 D:\TEST\test_chat_app\ChatApp\ChatApp\obj\Debug\net5.0\ChatApp.genruntimeconfig.cache
 D:\TEST\test_chat_app\ChatApp\ChatApp\obj\Debug\net5.0\ChatApp.csproj.CopyComplete
+D:\TEST\test_chat_app\ChatApp\ChatApp\obj\Debug\net5.0\ChatApp.csproj.AssemblyReference.cache
